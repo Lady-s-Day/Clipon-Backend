@@ -6,7 +6,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("approved_clinics", (t) => {
     t.increments("id").primary();
     t.integer("clinic_id").references("id").inTable("clinics");
-    t.integer("user_id").references("id").inTable("users");
+    t.string("user_id").references("uid").inTable("users");
   });
 };
 

@@ -8,7 +8,7 @@ exports.up = function (knex) {
     t.timestamp("date").notNullable();
     t.text("text").notNullable();
     t.integer("clinic_id").references("id").inTable("clinics");
-    t.integer("user_id").references("id").inTable("users");
+    t.string("user_id").references("uid").inTable("users");
   });
 };
 
