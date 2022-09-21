@@ -25,4 +25,24 @@ app.get("/", async (req, res) => {
   }
 });
 
+// app.get("/username/:uid", async (req, res) => {
+//   try {
+//     const username = await db.select("username").table("users").wherer({uid: req.params.uid});
+//     res.json(username);
+//   } catch (err) {
+//     console.error("Error getting username", err);
+//     res.send(err);
+//   }
+// });
+
+app.post("/username", async (req, res) => {
+  try {
+    const updatedUName = await db.insert({username: req.body.username}).into("users").where({uid: req.body.uid}).returning("username");
+    res.json(updatedUName);
+  } catch (err) {
+    console.error("Error inserting username", err);
+    res.send(err);
+  }
+})
+
 module.exports = app;
