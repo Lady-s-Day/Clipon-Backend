@@ -69,15 +69,15 @@ app.get("/clinics/:id", async (req, res) => {
   }
 });
 
-// app.get("/", async (req, res) => {
-//   try {
-//     res.json({ apple: "apple" });
-//     console.log("Succeeeeeeeeeeeeeeeeeeeeeed");
-//   } catch (err) {
-//     console.error(err);
-//     res.sendStatus(500);
-//   }
-// });
+app.get("/", async (req, res) => {
+  try {
+    res.json({ apple: "apple" });
+    console.log("Succeeeeeeeeeeeeeeeeeeeeeed");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
 
 
 module.exports = app;
