@@ -71,7 +71,10 @@ app.get("/clinics/:id", async (req, res) => {
 
 app.get("/", async (req, res) => {
   try {
-    res.json({ apple: "apple" });
+    res.send("heloo!エンドポイント繋げて使ってね
+// GET Tokyo's wards list　-->　/wards
+// GET Clinic's list　--> 　/clinics
+// GET a clinic by id　-->　/clinics/:id");
     console.log("Succeeeeeeeeeeeeeeeeeeeeeed");
   } catch (err) {
     console.error(err);
