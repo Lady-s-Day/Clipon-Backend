@@ -1,0 +1,3 @@
+production:
+  <<: *default
+  host: /cloudsql/cliponproject:asia-northeast1:clipon-test2/.s.PGSQL.5432
