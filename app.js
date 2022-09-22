@@ -32,17 +32,17 @@ app.get("/clinics", async (req, res) => {
   }
 });
 
-// app.get("/username/:uid", async (req, res) => {
-//   console.log(req.params.uid)
-//   try {
-//     const username = await db("users").where("uid", req.params.uid);
-//     console.log(username)
-//     res.json(username);
-//   } catch (err) {
-//     console.error("Error getting username", err);
-//     res.send(err);
-//   }
-// });
+app.get("/username/:uid", async (req, res) => {
+  console.log(req.params.uid)
+  try {
+    const username = await db("users").where("uid", req.params.uid);
+    console.log(username)
+    res.json(username);
+  } catch (err) {
+    console.error("Error getting username", err);
+    res.send(err);
+  }
+});
 
 app.post("/signup", async (req, res) => {
   console.log(req.body.uid, "uid")
