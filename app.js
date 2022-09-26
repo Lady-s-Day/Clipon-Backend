@@ -21,6 +21,20 @@ app.get("/wards", async (req, res) => {
   }
 });
 
+app.get("/wards/:id", async (req, res) => {
+  const targetId = req.params.id;
+  try {
+    const targetClinic = await db
+      .select()
+      .table("clinics")
+      .where({ tokyo_ward_id: targetId });
+    res.json(targetClinic);
+  } catch (err) {
+    console.error("Error loading clinics!", err);
+    res.sendStatus(500);
+  }
+})
+
 // GET Clinic's list
 app.get("/clinics", async (req, res) => {
   try {
