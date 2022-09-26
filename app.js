@@ -119,6 +119,20 @@ app.get("/reviews", async (req, res) => {
   }
 })
 
+app.get("/reviews/:id", async (req, res) => {
+  const targetId = req.params.id;
+  try {
+    const targetClinic = await db
+      .select()
+      .table("reviews")
+      .where({ clinic_id: targetId });
+    res.json(targetClinic);
+  } catch (err) {
+    console.error("Error loading reviews id!", err);
+    res.sendStatus(500);
+  }
+});
+
 app.post("/reviews", async (req, res) => {
   console.log(req.body.text, req.body.date, req.body.clinic_id, req.body.user_id, "post /reviews")
   return db("reviews").insert({
