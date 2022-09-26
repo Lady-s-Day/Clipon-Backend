@@ -121,7 +121,7 @@ app.get("/reviews", async (req, res) => {
 
 app.post("/reviews", async (req, res) => {
   console.log(req.body.text, req.body.date, req.body.clinic_id, req.body.user_id, "post /reviews")
-  return db("users").insert({
+  return db("reviews").insert({
     date: req.body.date,
     text: req.body.text,
     clinic_id: req.body.clinic_id,
@@ -130,6 +130,7 @@ app.post("/reviews", async (req, res) => {
     .then(() => {
       res.status(201).send(req.body)
     })
+    .catch((err) => console.log(err, "review err"))
 })
 
 app.get("/", async (req, res) => {
