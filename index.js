@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 9000;
   try {
     console.log("Running migrations...");
 
-    await db.migrate.rollback(undefined, true);
+    // await db.migrate.rollback(undefined, true);
     await db.migrate.latest();
     await db.seed.run();
 
