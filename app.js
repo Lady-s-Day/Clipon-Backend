@@ -47,10 +47,10 @@ app.get("/clinics", async (req, res) => {
 });
 
 app.get("/username/:uid", async (req, res) => {
-  console.log(req.params.uid)
+  console.log(req.params.uid);
   try {
     const username = await db("users").where("uid", req.params.uid);
-    console.log(username)
+    console.log(username);
     res.json(username);
   } catch (err) {
     console.error("Error getting username uid", err);
@@ -59,20 +59,22 @@ app.get("/username/:uid", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body.uid, "uid")
-  return db("users").insert({ uid: req.body.uid })
+  console.log(req.body.uid, "uid");
+  return db("users")
+    .insert({ uid: req.body.uid })
     .then(() => {
-      res.status(201).send(req.body.uid)
-    })
-})
+      res.status(201).send(req.body.uid);
+    });
+});
 
 app.put("/username", async (req, res) => {
-  console.log(req.body.username, req.body.uid)
-  return db("users").where("uid", req.body.uid)
+  console.log(req.body.username, req.body.uid);
+  return db("users")
+    .where("uid", req.body.uid)
     .update({
-      user_name: req.body.username
+      user_name: req.body.username,
     })
-    .then(() => res.status(204).send(req.body.username))
+    .then(() => res.status(204).send(req.body.username));
   // try {
   //   const updatedUName =
   //     await db.insert({ username: req.body.username }).into("users").where('uid', req.body.uid);
@@ -81,17 +83,21 @@ app.put("/username", async (req, res) => {
   //   console.error("Error inserting username", err);
   //   res.send(err);
   // }
-})
+});
 
 app.post("/username", async (req, res) => {
   try {
-    const updatedUName = await db.insert({username: req.body.username}).into("users").where({uid: req.body.uid}).returning("username");
+    const updatedUName = await db
+      .insert({ username: req.body.username })
+      .into("users")
+      .where({ uid: req.body.uid })
+      .returning("username");
     res.json(updatedUName);
   } catch (err) {
     console.error("Error inserting username", err);
     res.send(err);
   }
-})
+});
 
 // GET a clinic by id
 app.get("/clinics/:id", async (req, res) => {
@@ -133,6 +139,44 @@ app.get("/reviews/:id", async (req, res) => {
   }
 });
 
+
+// POST approved_clinics
+app.post("/approved", async (req, res) => {
+  try {
+    const newData = await db
+      .insert({ clinic_id: req.body.id, user_id: req.body.uid })
+      .into("approved_clinics");
+    res.json(newData);
+  } catch (err) {
+    console.error("Error inserting username", err);
+    res.send(err);
+  }
+});
+
+// app.get("/approved", async (req, res) => {
+//   try {
+//     const clinics = await db.select().table("approved_clinics");
+//     res.json(clinics);
+//   } catch (err) {
+//     console.error("Error loading clinics!", err);
+//     res.sendStatus(500);
+//   }
+// });
+
+// GET approved_clinics by id
+app.get("/approved/:id", async (req, res) => {
+  try {
+    const targetClinics = await db
+      .select()
+      .table("approved_clinics")
+      .where({ clinic_id: req.params.id });
+    res.json(targetClinics);
+  } catch (err) {
+    console.error("Error loading clinics!", err);
+    res.sendStatus(500);
+  }
+});
+
 app.post("/reviews", async (req, res) => {
   console.log(req.body.text, req.body.date, req.body.clinic_id, req.body.user_id, "post /reviews")
   return db("reviews").insert({
@@ -146,6 +190,7 @@ app.post("/reviews", async (req, res) => {
     })
     .catch((err) => console.log(err, "review err"))
 })
+
 
 app.get("/", async (req, res) => {
   try {
@@ -162,6 +207,5 @@ app.get("/", async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 module.exports = app;
