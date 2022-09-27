@@ -21,6 +21,20 @@ app.get("/wards", async (req, res) => {
   }
 });
 
+app.get("/wards/:id", async (req, res) => {
+  const targetId = req.params.id;
+  try {
+    const targetClinic = await db
+      .select()
+      .table("clinics")
+      .where({ tokyo_ward_id: targetId });
+    res.json(targetClinic);
+  } catch (err) {
+    console.error("Error loading wards id!", err);
+    res.sendStatus(500);
+  }
+})
+
 // GET Clinic's list
 app.get("/clinics", async (req, res) => {
   try {
@@ -39,7 +53,7 @@ app.get("/username/:uid", async (req, res) => {
     console.log(username);
     res.json(username);
   } catch (err) {
-    console.error("Error getting username", err);
+    console.error("Error getting username uid", err);
     res.send(err);
   }
 });
@@ -95,10 +109,36 @@ app.get("/clinics/:id", async (req, res) => {
       .where({ id: targetId });
     res.json(targetClinic);
   } catch (err) {
-    console.error("Error loading clinics!", err);
+    console.error("Error loading clinics id!", err);
     res.sendStatus(500);
   }
 });
+
+// reviews
+app.get("/reviews", async (req, res) => {
+  try {
+    const reviews = await db.select().table("reviews");
+    res.json(reviews);
+  } catch (err) {
+    console.error("Error loading reviews!", err);
+    res.sendStatus(500);
+  }
+})
+
+app.get("/reviews/:id", async (req, res) => {
+  const targetId = req.params.id;
+  try {
+    const targetClinic = await db
+      .select()
+      .table("reviews")
+      .where({ clinic_id: targetId });
+    res.json(targetClinic);
+  } catch (err) {
+    console.error("Error loading reviews id!", err);
+    res.sendStatus(500);
+  }
+});
+
 
 // POST approved_clinics
 app.post("/approved", async (req, res) => {
@@ -136,6 +176,21 @@ app.get("/approved/:id", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+app.post("/reviews", async (req, res) => {
+  console.log(req.body.text, req.body.date, req.body.clinic_id, req.body.user_id, "post /reviews")
+  return db("reviews").insert({
+    date: req.body.date,
+    text: req.body.text,
+    clinic_id: req.body.clinic_id,
+    user_id: req.body.user_id
+  })
+    .then(() => {
+      res.status(201).send(req.body)
+    })
+    .catch((err) => console.log(err, "review err"))
+})
+
 
 app.get("/", async (req, res) => {
   try {
