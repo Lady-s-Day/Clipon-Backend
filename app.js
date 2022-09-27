@@ -178,19 +178,18 @@ app.get("/approved/:id", async (req, res) => {
 });
 
 app.post("/reviews", async (req, res) => {
-  console.log(req.body.text, req.body.date, req.body.clinic_id, req.body.user_id, "post /reviews")
   return db("reviews").insert({
     date: req.body.date,
     text: req.body.text,
     clinic_id: req.body.clinic_id,
-    user_id: req.body.user_id
+    user_id: req.body.user_id,
+    approved: req.body.approved
   })
     .then(() => {
       res.status(201).send(req.body)
     })
     .catch((err) => console.log(err, "review err"))
 })
-
 
 app.get("/", async (req, res) => {
   try {
@@ -209,3 +208,4 @@ app.get("/", async (req, res) => {
 });
 
 module.exports = app;
+
