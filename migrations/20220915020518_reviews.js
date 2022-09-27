@@ -9,6 +9,7 @@ exports.up = function (knex) {
     t.text("text").notNullable();
     t.integer("clinic_id").references("id").inTable("clinics");
     t.string("user_id").references("uid").inTable("users");
+    t.boolean("approved").notNullable();
   });
 };
 
