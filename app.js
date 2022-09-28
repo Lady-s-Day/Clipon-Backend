@@ -128,9 +128,9 @@ app.get("/reviews", async (req, res) => {
 app.get("/reviews/:id", async (req, res) => {
   const targetId = req.params.id;
   try {
-    const targetClinic = await db
-      .select()
-      .table("reviews")
+    const targetClinic = await db("reviews")
+      .select("users.user_name", "reviews.text", "reviews.date", "reviews.approved")
+      .leftJoin("users", "reviews.user_id", "users.uid")
       .where({ clinic_id: targetId });
     res.json(targetClinic);
   } catch (err) {
@@ -138,6 +138,7 @@ app.get("/reviews/:id", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
 
 // POST approved_clinics
 app.post("/approved", async (req, res) => {
