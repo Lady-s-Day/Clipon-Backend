@@ -208,12 +208,12 @@ app.post("/reviews", async (req, res) => {
 });
 
 // GET saved clinics
-app.get("/saved", async (req, res) => {
+app.get("/saved/:id", async (req, res) => {
   try {
     const savedList = await db
       .select()
       .table("saved")
-      .where({ user_id: req.body.uid });
+      .where({ user_id: req.params.uid });
     res.json(savedList);
   } catch (err) {
     console.error("Error loading saved!", err);
