@@ -235,6 +235,17 @@ app.post("/saved", async (req, res) => {
 });
 
 // DELETE a clinic to unsave
+app.delete("/saved", async (req, res) => {
+  try {
+    await db("saved")
+      .where({ user_id: req.body.uid, clinic_id: req.body.clinic_id })
+      .del();
+    res.sendStatus(204);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
 
 app.get("/", async (req, res) => {
   try {

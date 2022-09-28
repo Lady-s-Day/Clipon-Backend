@@ -70,7 +70,7 @@ describe("clipon_Backend", () => {
       expect(actual.length).to.eq(expected.length);
     });
   });
-  describe.only("post method for approved_clinics", () => {
+  describe("post method for approved_clinics", () => {
     it("should insert a new collumn into saved table", (done) => {
       request
         .post("/saved")
@@ -81,6 +81,22 @@ describe("clipon_Backend", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(201);
+          done();
+        });
+    });
+  });
+  describe.only("delete method for approved_clinics", () => {
+    it("should delete a collumn from saved table", (done) => {
+      request
+        .delete("/saved")
+        .send({
+          uid: "53kR3H9AWHcp7u2pQlqELzRaMz13",
+          clinic_id: 10,
+        })
+        .end((err, res) => {
+          console.log(res.status);
+          expect(err).to.be.null;
+          expect(res).to.have.status(204);
           done();
         });
     });
