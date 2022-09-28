@@ -33,7 +33,7 @@ app.get("/wards/:id", async (req, res) => {
     console.error("Error loading wards id!", err);
     res.sendStatus(500);
   }
-})
+});
 
 // GET Clinic's list
 app.get("/clinics", async (req, res) => {
@@ -123,7 +123,7 @@ app.get("/reviews", async (req, res) => {
     console.error("Error loading reviews!", err);
     res.sendStatus(500);
   }
-})
+});
 
 app.get("/reviews/:id", async (req, res) => {
   const targetId = req.params.id;
@@ -139,16 +139,25 @@ app.get("/reviews/:id", async (req, res) => {
   }
 });
 
-
 // POST approved_clinics
 app.post("/approved", async (req, res) => {
+  let clinicId;
   try {
+    try {
+      clinicId = await db
+        .select("id")
+        .from("clinics")
+        .where({ clinic_name: req.body.clinic_name });
+    } catch (err) {
+      console.error("Error loading reviews!", err);
+      res.sendStatus(500);
+    }
     const newData = await db
-      .insert({ clinic_id: req.body.id, user_id: req.body.uid })
+      .insert({ clinic_id: clinicId, user_id: req.body.uid })
       .into("approved_clinics");
-    res.json(newData);
+    res.status(201).send.json(newData);
   } catch (err) {
-    console.error("Error inserting username", err);
+    console.error("Error inserting clinic_id and user_id", err);
     res.send(err);
   }
 });
@@ -178,18 +187,19 @@ app.get("/approved/:id", async (req, res) => {
 });
 
 app.post("/reviews", async (req, res) => {
-  return db("reviews").insert({
-    date: req.body.date,
-    text: req.body.text,
-    clinic_id: req.body.clinic_id,
-    user_id: req.body.user_id,
-    approved: req.body.approved
-  })
-    .then(() => {
-      res.status(201).send(req.body)
+  return db("reviews")
+    .insert({
+      date: req.body.date,
+      text: req.body.text,
+      clinic_id: req.body.clinic_id,
+      user_id: req.body.user_id,
+      approved: req.body.approved,
     })
-    .catch((err) => console.log(err, "review err"))
-})
+    .then(() => {
+      res.status(201).send(req.body);
+    })
+    .catch((err) => console.log(err, "review err"));
+});
 
 app.get("/", async (req, res) => {
   try {
@@ -208,4 +218,3 @@ app.get("/", async (req, res) => {
 });
 
 module.exports = app;
-
