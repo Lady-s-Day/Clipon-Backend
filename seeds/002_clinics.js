@@ -67,6 +67,7 @@ exports.seed = async function (knex) {
       url: "http://www.yoda-clinic.com",
       image: "https://i.ibb.co/42kcLbT/yoda-ladys.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 8,
