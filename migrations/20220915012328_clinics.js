@@ -10,6 +10,7 @@ exports.up = function (knex) {
     t.string("url");
     t.string("image");
     t.integer("tokyo_ward_id").references("id").inTable("tokyo");
+    t.boolean("doctor");
   });
 };
 

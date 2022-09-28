@@ -13,6 +13,7 @@ exports.seed = async function (knex) {
       url: "http://megumi-w-clinic.com/",
       image: "https://i.ibb.co/D8xZWwQ/megumi.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 2,
@@ -21,6 +22,7 @@ exports.seed = async function (knex) {
       url: "https://www.sekiguchi-clinic.net/",
       image: "https://i.ibb.co/qJwtPjm/sekiguchi.jpg",
       tokyo_ward_id: 14,
+      doctor: false,
     },
     {
       id: 3,
@@ -29,6 +31,7 @@ exports.seed = async function (knex) {
       url: "http://www.himawari.metro.tokyo.jp/qq13/qqport/tomintop/detail/fk1101.php?sisetuid=2132829890&kinouid=fk9920",
       image: null,
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 4,
@@ -37,6 +40,7 @@ exports.seed = async function (knex) {
       url: "https://www.seijo-keikoclub.com/",
       image: "https://i.ibb.co/p1K7fgV/seijo-matsumura.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 5,
@@ -45,6 +49,7 @@ exports.seed = async function (knex) {
       url: "https://www.seijo-mc.com/",
       image: "https://i.ibb.co/kKf2xP2/seijo-maternity.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 6,
@@ -53,6 +58,7 @@ exports.seed = async function (knex) {
       url: "http://www.yumiko-clinic.com",
       image: "https://i.ibb.co/Ky5MGXT/yumiko.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 7,
@@ -61,6 +67,7 @@ exports.seed = async function (knex) {
       url: "http://www.yoda-clinic.com",
       image: "https://i.ibb.co/42kcLbT/yoda-ladys.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 8,
@@ -69,6 +76,7 @@ exports.seed = async function (knex) {
       url: "http://merry-ladies-clinic.com/",
       image: "https://i.ibb.co/Z17dRNf/merry.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 9,
@@ -77,6 +85,7 @@ exports.seed = async function (knex) {
       url: "http://www.shimokita-cent-clinic.com/",
       image: "https://i.ibb.co/b6r783B/shimokita-central.jpg",
       tokyo_ward_id: 14,
+      doctor: false,
     },
     {
       id: 10,
@@ -85,6 +94,7 @@ exports.seed = async function (knex) {
       url: "http://www.sanfujin.com/",
       image: "https://i.ibb.co/s63zDyS/ikenoue.jpg",
       tokyo_ward_id: 14,
+      doctor: true,
     },
     {
       id: 11,
@@ -93,6 +103,7 @@ exports.seed = async function (knex) {
       url: "http://www.sangenjaya-wcl.com/index.html",
       image: "https://i.ibb.co/VgRMfJ8/sancha-womens.jpg",
       tokyo_ward_id: 14,
+      doctor: false,
     },
   ]);
 };
