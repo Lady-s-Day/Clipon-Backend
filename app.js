@@ -207,6 +207,35 @@ app.post("/reviews", async (req, res) => {
     .catch((err) => console.log(err, "review err"));
 });
 
+// GET saved clinics
+app.get("/saved", async (req, res) => {
+  try {
+    const savedList = await db
+      .select()
+      .table("saved")
+      .where({ user_id: req.body.uid });
+    res.json(savedList);
+  } catch (err) {
+    console.error("Error loading saved!", err);
+    res.sendStatus(500);
+  }
+});
+
+// POST a clinic to save
+app.post("/saved", async (req, res) => {
+  try {
+    const newData = await db
+      .insert({ clinic_id: req.body.clinic_id, user_id: req.body.uid })
+      .into("saved");
+    res.status(201).send.json(newData);
+  } catch (err) {
+    console.error("Error inserting clinic_id and user_id", err);
+    res.send(err);
+  }
+});
+
+// DELETE a clinic to unsave
+
 app.get("/", async (req, res) => {
   try {
     res.json({

@@ -57,4 +57,32 @@ describe("clipon_Backend", () => {
       expect(actual.length).to.eq(expected.length);
     });
   });
+  describe("get method for saved", () => {
+    it("get saved clinics from saved table", async () => {
+      const expected = await knex("saved")
+        .select()
+        .where({ user_id: "K9ISFp2HfnTFjRvrfzq9z8ZdiZ33" });
+      const res = await request
+        .get("/saved")
+        .send({ uid: "K9ISFp2HfnTFjRvrfzq9z8ZdiZ33" });
+      const actual = JSON.parse(res.text);
+      expect(actual[0].user_id).to.eq(expected[0].user_id);
+      expect(actual.length).to.eq(expected.length);
+    });
+  });
+  describe.only("post method for approved_clinics", () => {
+    it("should insert a new collumn into saved table", (done) => {
+      request
+        .post("/saved")
+        .send({
+          clinic_id: 10,
+          uid: "53kR3H9AWHcp7u2pQlqELzRaMz13",
+        })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(201);
+          done();
+        });
+    });
+  });
 });
