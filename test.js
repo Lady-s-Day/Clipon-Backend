@@ -22,7 +22,7 @@ describe("clipon_Backend", () => {
       });
     });
   });
-  describe("get methods", () => {
+  describe("get methods for clinics", () => {
     it("should get all from clinics", async () => {
       const expected = await knex("clinics").select();
       const res = await request.get("/clinics");
@@ -31,7 +31,7 @@ describe("clipon_Backend", () => {
       expect(actual.length).to.eq(expected.length);
     });
   });
-  describe("post method", () => {
+  describe("post method for approved_clinics", () => {
     it("should insert a new collumn into approved_clinics table", (done) => {
       request
         .post("/approved")
@@ -46,7 +46,7 @@ describe("clipon_Backend", () => {
         });
     });
   });
-  describe("get method", () => {
+  describe("get method for approved_clinics", () => {
     it("get approved clinics from approved_clinics table", async () => {
       const expected = await knex("approved_clinics")
         .select()
@@ -55,6 +55,50 @@ describe("clipon_Backend", () => {
       const actual = JSON.parse(res.text);
       expect(actual[0].id).to.eq(expected[0].id);
       expect(actual.length).to.eq(expected.length);
+    });
+  });
+  describe("get method for saved", () => {
+    it("get saved clinics from saved table", async () => {
+      const expected = await knex("saved")
+        .select()
+        .where({ user_id: "K9ISFp2HfnTFjRvrfzq9z8ZdiZ33" });
+      const res = await request
+        .get("/saved")
+        .send({ uid: "K9ISFp2HfnTFjRvrfzq9z8ZdiZ33" });
+      const actual = JSON.parse(res.text);
+      expect(actual[0].user_id).to.eq(expected[0].user_id);
+      expect(actual.length).to.eq(expected.length);
+    });
+  });
+  describe("post method for approved_clinics", () => {
+    it("should insert a new collumn into saved table", (done) => {
+      request
+        .post("/saved")
+        .send({
+          clinic_id: 10,
+          uid: "53kR3H9AWHcp7u2pQlqELzRaMz13",
+        })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(201);
+          done();
+        });
+    });
+  });
+  describe.only("delete method for approved_clinics", () => {
+    it("should delete a collumn from saved table", (done) => {
+      request
+        .delete("/saved")
+        .send({
+          uid: "53kR3H9AWHcp7u2pQlqELzRaMz13",
+          clinic_id: 10,
+        })
+        .end((err, res) => {
+          console.log(res.status);
+          expect(err).to.be.null;
+          expect(res).to.have.status(204);
+          done();
+        });
     });
   });
 });

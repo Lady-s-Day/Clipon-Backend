@@ -129,7 +129,12 @@ app.get("/reviews/:id", async (req, res) => {
   const targetId = req.params.id;
   try {
     const targetClinic = await db("reviews")
-      .select("users.user_name", "reviews.text", "reviews.date", "reviews.approved")
+      .select(
+        "users.user_name",
+        "reviews.text",
+        "reviews.date",
+        "reviews.approved"
+      )
       .leftJoin("users", "reviews.user_id", "users.uid")
       .where({ clinic_id: targetId });
     res.json(targetClinic);
@@ -139,10 +144,9 @@ app.get("/reviews/:id", async (req, res) => {
   }
 });
 
-
 // POST approved_clinics
 app.post("/approved", async (req, res) => {
-  let clinicId;
+  let clinicId; // [ { id: 8 } ]が代入されることを想定
   try {
     try {
       clinicId = await db
@@ -201,6 +205,46 @@ app.post("/reviews", async (req, res) => {
       res.status(201).send(req.body);
     })
     .catch((err) => console.log(err, "review err"));
+});
+
+// GET saved clinics
+app.get("/saved", async (req, res) => {
+  try {
+    const savedList = await db
+      .select()
+      .table("saved")
+      .where({ user_id: req.body.uid });
+    res.json(savedList);
+  } catch (err) {
+    console.error("Error loading saved!", err);
+    res.sendStatus(500);
+  }
+});
+
+// POST a clinic to save
+app.post("/saved", async (req, res) => {
+  try {
+    const newData = await db
+      .insert({ clinic_id: req.body.clinic_id, user_id: req.body.uid })
+      .into("saved");
+    res.status(201).send.json(newData);
+  } catch (err) {
+    console.error("Error inserting clinic_id and user_id", err);
+    res.send(err);
+  }
+});
+
+// DELETE a clinic to unsave
+app.delete("/saved", async (req, res) => {
+  try {
+    await db("saved")
+      .where({ user_id: req.body.uid, clinic_id: req.body.clinic_id })
+      .del();
+    res.sendStatus(204);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 });
 
 app.get("/", async (req, res) => {
