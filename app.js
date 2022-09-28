@@ -148,12 +148,13 @@ app.post("/approved", async (req, res) => {
         .select("id")
         .from("clinics")
         .where({ clinic_name: req.body.clinic_name });
+      console.log(clinicId);
     } catch (err) {
       console.error("Error loading reviews!", err);
       res.sendStatus(500);
     }
     const newData = await db
-      .insert({ clinic_id: clinicId, user_id: req.body.uid })
+      .insert({ clinic_id: clinicId[0].id, user_id: req.body.uid })
       .into("approved_clinics");
     res.status(201).send.json(newData);
   } catch (err) {
