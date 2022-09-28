@@ -36,12 +36,12 @@ describe("clipon_Backend", () => {
       request
         .post("/approved")
         .send({
-          id: 10,
+          clinic_name: "三軒茶屋メリーレディースクリニック",
           uid: "53kR3H9AWHcp7u2pQlqELzRaMz13",
         })
         .end((err, res) => {
           expect(err).to.be.null;
-          expect(res).to.have.status(200);
+          expect(res).to.have.status(201);
           done();
         });
     });
