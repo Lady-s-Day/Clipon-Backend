@@ -22,7 +22,7 @@ describe("clipon_Backend", () => {
       });
     });
   });
-  describe("get methods", () => {
+  describe("get methods for clinics", () => {
     it("should get all from clinics", async () => {
       const expected = await knex("clinics").select();
       const res = await request.get("/clinics");
@@ -31,7 +31,7 @@ describe("clipon_Backend", () => {
       expect(actual.length).to.eq(expected.length);
     });
   });
-  describe("post method", () => {
+  describe("post method for approved_clinics", () => {
     it("should insert a new collumn into approved_clinics table", (done) => {
       request
         .post("/approved")
@@ -46,7 +46,7 @@ describe("clipon_Backend", () => {
         });
     });
   });
-  describe("get method", () => {
+  describe("get method for approved_clinics", () => {
     it("get approved clinics from approved_clinics table", async () => {
       const expected = await knex("approved_clinics")
         .select()

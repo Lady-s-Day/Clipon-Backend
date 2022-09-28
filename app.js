@@ -129,7 +129,12 @@ app.get("/reviews/:id", async (req, res) => {
   const targetId = req.params.id;
   try {
     const targetClinic = await db("reviews")
-      .select("users.user_name", "reviews.text", "reviews.date", "reviews.approved")
+      .select(
+        "users.user_name",
+        "reviews.text",
+        "reviews.date",
+        "reviews.approved"
+      )
       .leftJoin("users", "reviews.user_id", "users.uid")
       .where({ clinic_id: targetId });
     res.json(targetClinic);
@@ -139,10 +144,9 @@ app.get("/reviews/:id", async (req, res) => {
   }
 });
 
-
 // POST approved_clinics
 app.post("/approved", async (req, res) => {
-  let clinicId;
+  let clinicId; // [ { id: 8 } ]が代入されることを想定
   try {
     try {
       clinicId = await db
