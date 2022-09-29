@@ -333,8 +333,8 @@ app.get("/searched-clinics", async (req, res) => {
       }
     }
 
-    res.json(result);
-    // clinic_idの配列が返ってくる[1,2]みたいな
+    res.json({ clinicIds: result });
+    // 戻り値の形　{"clinicIds":[1,2,4,5,7,8,9,11]}
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
