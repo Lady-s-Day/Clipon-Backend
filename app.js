@@ -307,7 +307,7 @@ app.get("/searched-clinics", async (req, res) => {
     try {
       clinicIds = await db("clinics")
         .select("id")
-        .where({ tokyo_ward_id: input.ward });
+        .where({ tokyo_ward_id: input.ward, doctor: input.女医 });
     } catch (err) {
       console.error(err);
       res.sendStatus(500);
