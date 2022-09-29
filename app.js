@@ -210,9 +210,15 @@ app.post("/reviews", async (req, res) => {
 // GET saved clinics
 app.get("/saved/:uid", async (req, res) => {
   try {
-    const savedList = await db
-      .select()
-      .table("saved")
+    const savedList = await db("saved")
+      .select(
+        "clinics.clinic_name",
+        "clinics.image",
+        "clinics.tokyo_ward_id",
+        "clinics.doctor"
+      )
+      .rightJoin("clinics", "clinics.id", "saved.clinic_id")
+      .rightJoin("treatments", "treatments.clinic_id", "saved.clinic_id")
       .where({ user_id: req.params.uid });
     res.json(savedList);
   } catch (err) {
