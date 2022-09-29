@@ -253,16 +253,16 @@ app.delete("/saved", async (req, res) => {
   }
 });
 
-// GET
-// app.get("/", async (req, res) => {
-//   try {
-//     const allTypes = await db("treatments").select()
-
-//   } catch (err) {
-//     console.error(err);
-//     res.sendStatus(500);
-//   }
-// });
+// GET distinct types from treatments table
+app.get("/types", async (req, res) => {
+  try {
+    const allTypes = await db("treatments").distinct("type");
+    res.json(allTypes);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
 
 app.get("/", async (req, res) => {
   try {
