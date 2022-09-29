@@ -208,7 +208,7 @@ app.post("/reviews", async (req, res) => {
 });
 
 // GET saved clinics
-app.get("/saved/:id", async (req, res) => {
+app.get("/saved/:uid", async (req, res) => {
   try {
     const savedList = await db
       .select()
