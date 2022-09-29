@@ -247,6 +247,17 @@ app.delete("/saved", async (req, res) => {
   }
 });
 
+// GET
+// app.get("/", async (req, res) => {
+//   try {
+//     const allTypes = await db("treatments").select()
+
+//   } catch (err) {
+//     console.error(err);
+//     res.sendStatus(500);
+//   }
+// });
+
 app.get("/", async (req, res) => {
   try {
     res.json({
