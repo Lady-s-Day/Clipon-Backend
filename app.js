@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const db = require("./knex.js");
 const cors = require("cors");
+const knex = require("knex");
 
 const app = express();
 app.use(express.json());
@@ -258,6 +259,33 @@ app.get("/types", async (req, res) => {
   }
 });
 
+// GET types from treatments by ids
+// req.params.ids は { ids : [1, 2...]} な形
+// {1 :  [ "生理痛", "PMS" ], 2 : ["性感染症", "避妊"]}的なものが返る
+
+// GET clinic_id from treatments table
+// req.params は　{
+// "ward": 14, 世田谷区
+// "女医": true,
+// "PMS": true,
+// "性感染症": false,
+// "月経異常": false,
+// "生理痛": false,
+// "避妊": false
+// }
+app.get("/searched-clinics", async (req, res) => {
+  try {
+    // const clinicAndTypes = await db("treatments").select().groupBy("clinic_id");
+    const clinicAndTypes = await db("treatments")
+      .select({ clinic: "clinic_id", type: knex.raw("array_agg(type)") })
+      .groupBy("clinic_id");
+    res.json(clinicAndTypes);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
 app.get("/", async (req, res) => {
   try {
     res.json({
@@ -275,3 +303,11 @@ app.get("/", async (req, res) => {
 });
 
 module.exports = app;
+
+const func = async () => {
+  const clinicAndTypes = await db("treatments")
+    .select({ clinic: "clinic_id", type: knex.raw("array_agg(type)") })
+    .groupBy("clinic_id");
+  console.log(clinicAndTypes);
+};
+func();
