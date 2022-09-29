@@ -216,11 +216,9 @@ app.get("/saved/:uid", async (req, res) => {
         "clinics.image",
         "clinics.tokyo_ward_id",
         "clinics.doctor",
-        "clinics.clinic_id",
-        "treatments.type",
+        "clinics.id",
       )
       .rightJoin("clinics", "clinics.id", "saved.clinic_id")
-      .rightJoin("treatments", "treatments.clinic_id", "saved.clinic_id")
       .where({ user_id: req.params.uid });
     res.json(savedList);
   } catch (err) {
