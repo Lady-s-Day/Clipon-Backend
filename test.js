@@ -85,7 +85,7 @@ describe("clipon_Backend", () => {
         });
     });
   });
-  describe.only("delete method for approved_clinics", () => {
+  describe("delete method for approved_clinics", () => {
     it("should delete a collumn from saved table", (done) => {
       request
         .delete("/saved")
@@ -99,6 +99,17 @@ describe("clipon_Backend", () => {
           expect(res).to.have.status(204);
           done();
         });
+    });
+  });
+  describe.only("get methods for treatments", () => {
+    it("should get distinct types from treatments", async () => {
+      const expected = await knex("treatments").distinct("type");
+      const res = await request.get("/types");
+      const actual = JSON.parse(res.text);
+      console.log("expected", expected);
+      console.log("actual", actual);
+      // expect(actual[0].id).to.eq(expected[0].id);
+      expect(actual.length).to.eq(expected.length);
     });
   });
 });
