@@ -215,7 +215,8 @@ app.get("/saved/:uid", async (req, res) => {
         "clinics.clinic_name",
         "clinics.image",
         "clinics.tokyo_ward_id",
-        "clinics.doctor"
+        "clinics.doctor",
+        "treatments.type"
       )
       .rightJoin("clinics", "clinics.id", "saved.clinic_id")
       .rightJoin("treatments", "treatments.clinic_id", "saved.clinic_id")
