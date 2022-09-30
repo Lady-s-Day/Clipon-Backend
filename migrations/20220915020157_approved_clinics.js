@@ -7,6 +7,7 @@ exports.up = function (knex) {
     t.increments("id").primary();
     t.integer("clinic_id").references("id").inTable("clinics");
     t.string("user_id").references("uid").inTable("users");
+    t.string("photo_uri");
   });
 };
 

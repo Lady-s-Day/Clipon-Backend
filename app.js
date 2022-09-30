@@ -161,7 +161,11 @@ app.post("/approved", async (req, res) => {
       res.sendStatus(500);
     }
     const newData = await db
-      .insert({ clinic_id: clinicId[0].id, user_id: req.body.uid })
+      .insert({
+        clinic_id: clinicId[0].id,
+        user_id: req.body.uid,
+        photo_uri: req.body.photo_uri,
+      })
       .into("approved_clinics");
     res.status(201).send.json(newData);
   } catch (err) {
@@ -294,52 +298,62 @@ app.get("/types/ids", async (req, res) => {
 
 // GET clinic_id from treatments table
 app.get("/searched-clinics", async (req, res) => {
-  let clinicIds;
-  const selectedTypes = [];
-  const dic = {};
-  const result = [];
+  let clinicAndTypes;
   const input = req.query;
+  const result = [];
+  const selectedTypes = [];
+  const isAllIncludes = (arr, target) => arr.every((el) => target.includes(el));
   for (const key in input) {
     if (key !== "ward" && key !== "女医" && input[key] === true) {
       selectedTypes.push(key);
     }
   }
+  // console.log("selectedTypes:::::::::", selectedTypes);
+
   try {
-    try {
-      clinicIds = await db("clinics")
-        .select("id")
-        .where({ tokyo_ward_id: input.ward, doctor: input.女医 });
-    } catch (err) {
-      console.error(err);
-      res.sendStatus(500);
+    if (input.女医) {
+      // 女医true
+      clinicAndTypes = await db("clinics")
+        .join("treatments", "clinics.id", "treatments.clinic_id")
+        .select({
+          clinic_id: "treatments.clinic_id",
+          types: db.raw("array_agg(treatments.type)"),
+        })
+        .groupBy("clinic_id")
+        .where({
+          "clinics.tokyo_ward_id": input.ward,
+          "clinics.doctor": input.女医,
+        });
+      // console.log(clinicAndTypes);
+    } else {
+      // 女医false
+      clinicAndTypes = await db("clinics")
+        .join("treatments", "clinics.id", "treatments.clinic_id")
+        .select({
+          clinic_id: "treatments.clinic_id",
+          types: db.raw("array_agg(treatments.type)"),
+        })
+        .groupBy("clinic_id")
+        .where({
+          "clinics.tokyo_ward_id": input.ward,
+        });
+      // console.log(clinicAndTypes);
     }
-    const ids = clinicIds.map((e) => e.id);
-    const types = await db("treatments")
-      .select("clinic_id", "type")
-      .whereIn("clinic_id", ids)
-      .whereIn("type", selectedTypes)
-      .groupBy("clinic_id", "type");
-
-    for (const obj of types) {
-      if (!dic.hasOwnProperty(obj.clinic_id)) {
-        dic[obj.clinic_id] = 1;
-      } else {
-        dic[obj.clinic_id]++;
-      }
-    }
-    for (const key in dic) {
-      let clinicId = dic[key];
-      if (clinicId === selectedTypes.length) {
-        result.push(Number(key));
-      }
-    }
-
-    res.json({ clinicIds: result });
-    // 戻り値の形　{"clinicIds":[1,2,4,5,7,8,9,11]}
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
+
+  for (const clinicObj of clinicAndTypes) {
+    if (isAllIncludes(selectedTypes, clinicObj.types)) {
+      result.push(clinicObj.clinic_id);
+    }
+  }
+
+  // console.log("result:::::::::::::", result);
+  res.json({ clinicIds: result });
+  // 戻り値の形 女医true　{"clinicIds":[1,4,5,7,8]}
+  // 戻り値の形 女医false　{"clinicIds":[1,2,4,5,7,8,9,11]}
 });
 
 app.get("/", async (req, res) => {
@@ -359,11 +373,3 @@ app.get("/", async (req, res) => {
 });
 
 module.exports = app;
-
-// const func = async () => {
-//   const clinicAndTypes = await db("treatments")
-//     .select({ clinic: "clinic_id", type: knex.raw("array_agg(type)") })
-//     .groupBy("clinic_id");
-//   console.log(clinicAndTypes);
-// };
-// func();
