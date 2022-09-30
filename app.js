@@ -49,10 +49,10 @@ app.get("/clinics", async (req, res) => {
 });
 
 app.get("/username/:uid", async (req, res) => {
-  console.log(req.params.uid);
+  // console.log(req.params.uid);
   try {
     const username = await db("users").where("uid", req.params.uid);
-    console.log(username);
+    // console.log(username);
     res.json(username);
   } catch (err) {
     console.error("Error getting username uid", err);
@@ -61,7 +61,7 @@ app.get("/username/:uid", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body.uid, "uid");
+  // console.log(req.body.uid, "uid");
   return db("users")
     .insert({ uid: req.body.uid })
     .then(() => {
@@ -70,7 +70,7 @@ app.post("/signup", async (req, res) => {
 });
 
 app.put("/username", async (req, res) => {
-  console.log(req.body.username, req.body.uid);
+  // console.log(req.body.username, req.body.uid);
   return db("users")
     .where("uid", req.body.uid)
     .update({
@@ -155,7 +155,7 @@ app.post("/approved", async (req, res) => {
         .select("id")
         .from("clinics")
         .where({ clinic_name: req.body.clinic_name });
-      console.log(clinicId);
+      // console.log(clinicId);
     } catch (err) {
       console.error("Error loading reviews!", err);
       res.sendStatus(500);
@@ -270,10 +270,10 @@ app.get("/types", async (req, res) => {
 // req.params.ids は { ids : [1, 2...]} な形
 // {1 :  [ "生理痛", "PMS" ], 2 : ["性感染症", "避妊"]}的なものが返る
 app.get("/types/ids", async (req, res) => {
-  const ids = req.params.ids;
+  const id = req.query.id.map(e => Number(e));
   const obj = {};
   try {
-    const allTypes = await db("treatments").select().whereIn("clinic_id", ids);
+    const allTypes = await db("treatments").select().whereIn("clinic_id", id);
     for (const item of allTypes) {
       let key = item.clinic_id;
       if (obj.hasOwnProperty(`${key}`)) {
@@ -284,9 +284,10 @@ app.get("/types/ids", async (req, res) => {
         obj[key] = arr;
       }
     }
+    console.log(allTypes);
     res.json(obj);
   } catch (err) {
-    console.error(err);
+    console.error(err, "ids");
     res.sendStatus(500);
   }
 });
@@ -297,7 +298,7 @@ app.get("/searched-clinics", async (req, res) => {
   const selectedTypes = [];
   const dic = {};
   const result = [];
-  const input = req.params;
+  const input = req.query;
   for (const key in input) {
     if (key !== "ward" && key !== "女医" && input[key] === true) {
       selectedTypes.push(key);
