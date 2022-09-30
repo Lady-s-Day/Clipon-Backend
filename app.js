@@ -161,7 +161,11 @@ app.post("/approved", async (req, res) => {
       res.sendStatus(500);
     }
     const newData = await db
-      .insert({ clinic_id: clinicId[0].id, user_id: req.body.uid })
+      .insert({
+        clinic_id: clinicId[0].id,
+        user_id: req.body.uid,
+        photo_uri: req.body.photo_uri,
+      })
       .into("approved_clinics");
     res.status(201).send.json(newData);
   } catch (err) {
@@ -270,7 +274,7 @@ app.get("/types", async (req, res) => {
 // req.params.ids は { ids : [1, 2...]} な形
 // {1 :  [ "生理痛", "PMS" ], 2 : ["性感染症", "避妊"]}的なものが返る
 app.get("/types/ids", async (req, res) => {
-  const ids = req.body.ids;
+  const ids = req.params.ids;
   const obj = {};
   try {
     const allTypes = await db("treatments").select().whereIn("clinic_id", ids);
@@ -294,7 +298,7 @@ app.get("/types/ids", async (req, res) => {
 // GET clinic_id from treatments table
 app.get("/searched-clinics", async (req, res) => {
   let clinicAndTypes;
-  const input = req.body;
+  const input = req.params;
   const result = [];
   const selectedTypes = [];
   const isAllIncludes = (arr, target) => arr.every((el) => target.includes(el));
