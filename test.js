@@ -124,12 +124,12 @@ describe("clipon_Backend", () => {
         生理痛: false,
         避妊: false,
       });
-      // const actual = JSON.parse(res.text);
-      // console.log("expected", expected);
-      // console.log("actual", actual);
       console.log("res", res.text);
-      // expect(actual[0].id).to.eq(expected[0].id);
-      // expect(actual).to.eq(expected);
+      expect(res.text).to.be.deep.eq(
+        JSON.stringify({
+          clinicIds: [1, 4, 5, 7, 8],
+        })
+      );
     });
   });
   describe("get methods for types of treatments table", () => {
