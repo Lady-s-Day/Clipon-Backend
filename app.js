@@ -274,7 +274,7 @@ app.get("/types", async (req, res) => {
 // req.params.ids は { ids : [1, 2...]} な形
 // {1 :  [ "生理痛", "PMS" ], 2 : ["性感染症", "避妊"]}的なものが返る
 app.get("/types/ids", async (req, res) => {
-  const id = req.query.id.map(e => Number(e));
+  const id = req.query.id.map((e) => Number(e));
   const obj = {};
   try {
     const allTypes = await db("treatments").select().whereIn("clinic_id", id);
@@ -299,7 +299,18 @@ app.get("/types/ids", async (req, res) => {
 // GET clinic_id from treatments table
 app.get("/searched-clinics", async (req, res) => {
   let clinicAndTypes;
-  const input = req.query;
+  let input = req.query;
+
+  for (const key in req.body) {
+    if (key === "ward") {
+      input[key] = Number(input[key]);
+    } else if (input[key] === "true") {
+      input[key] = true;
+    } else {
+      input[key] = false;
+    }
+  }
+  console.log("2", input);
   const result = [];
   const selectedTypes = [];
   const isAllIncludes = (arr, target) => arr.every((el) => target.includes(el));

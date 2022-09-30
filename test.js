@@ -116,13 +116,13 @@ describe("clipon_Backend", () => {
     it("should get distinct clinic_id from searched-clinics", async () => {
       // const expected = await knex("treatments").distinct("type");
       const res = await request.get("/searched-clinics").send({
-        PMS: true,
-        ward: 14,
-        女医: true,
-        性感染症: false,
-        月経異常: false,
-        生理痛: false,
-        避妊: false,
+        PMS: "true",
+        ward: "14",
+        女医: "true",
+        性感染症: "false",
+        月経異常: "false",
+        生理痛: "false",
+        避妊: "false",
       });
       console.log("res", res.text);
       expect(res.text).to.be.deep.eq(
