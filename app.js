@@ -274,10 +274,10 @@ app.get("/types", async (req, res) => {
 // req.params.ids は { ids : [1, 2...]} な形
 // {1 :  [ "生理痛", "PMS" ], 2 : ["性感染症", "避妊"]}的なものが返る
 app.get("/types/ids", async (req, res) => {
-  const id = req.query.id.map((e) => Number(e));
+  const ids = req.query.ids.map((e) => Number(e));
   const obj = {};
   try {
-    const allTypes = await db("treatments").select().whereIn("clinic_id", id);
+    const allTypes = await db("treatments").select().whereIn("clinic_id", ids);
     for (const item of allTypes) {
       let key = item.clinic_id;
       if (obj.hasOwnProperty(`${key}`)) {
