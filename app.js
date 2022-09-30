@@ -359,10 +359,10 @@ app.get("/", async (req, res) => {
 
 module.exports = app;
 
-const func = async () => {
-  const clinicAndTypes = await db("treatments")
-    .select({ clinic: "clinic_id", type: knex.raw("array_agg(type)") })
-    .groupBy("clinic_id");
-  console.log(clinicAndTypes);
-};
-func();
+// const func = async () => {
+//   const clinicAndTypes = await db("treatments")
+//     .select({ clinic: "clinic_id", type: knex.raw("array_agg(type)") })
+//     .groupBy("clinic_id");
+//   console.log(clinicAndTypes);
+// };
+// func();
