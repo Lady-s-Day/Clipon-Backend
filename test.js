@@ -101,7 +101,7 @@ describe("clipon_Backend", () => {
         });
     });
   });
-  describe.only("get methods for treatments", () => {
+  describe("get methods for treatments", () => {
     it("should get distinct types from treatments", async () => {
       const expected = await knex("treatments").distinct("type");
       const res = await request.get("/types");
@@ -110,6 +110,36 @@ describe("clipon_Backend", () => {
       console.log("actual", actual);
       // expect(actual[0].id).to.eq(expected[0].id);
       expect(actual.length).to.eq(expected.length);
+    });
+  });
+  describe.only("get methods to get searched-clinics", () => {
+    it("should get distinct clinic_id from searched-clinics", async () => {
+      // const expected = await knex("treatments").distinct("type");
+      const res = await request.get("/searched-clinics").send({
+        PMS: true,
+        ward: 14,
+        女医: true,
+        性感染症: false,
+        月経異常: false,
+        生理痛: false,
+        避妊: false,
+      });
+      // const actual = JSON.parse(res.text);
+      // console.log("expected", expected);
+      // console.log("actual", actual);
+      console.log("res", res.text);
+      // expect(actual[0].id).to.eq(expected[0].id);
+      // expect(actual).to.eq(expected);
+    });
+  });
+  describe("get methods for types of treatments table", () => {
+    it("should get clinic_id and types from treatments table", async () => {
+      // const expected = await knex("treatments").distinct("type");
+      const res = await request.get("/types/ids").send({ ids: [1, 2] });
+      // const actual = JSON.parse(res.text);
+      console.log("res", res.text);
+      // expect(actual[0].id).to.eq(expected[0].id);
+      // expect(actual.length).to.eq(expected.length);
     });
   });
 });
