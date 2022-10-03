@@ -29,7 +29,7 @@ exports.seed = async function (knex) {
       clinic_name: "ユリクリニック",
       stars: 0.0,
       url: "http://www.himawari.metro.tokyo.jp/qq13/qqport/tomintop/detail/fk1101.php?sisetuid=2132829890&kinouid=fk9920",
-      image: null,
+      image: "https://i.ibb.co/LnmW6XQ/yuri.jpg",
       tokyo_ward_id: 14,
       doctor: true,
     },
