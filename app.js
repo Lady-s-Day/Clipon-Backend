@@ -301,7 +301,7 @@ app.get("/searched-clinics", async (req, res) => {
   let clinicAndTypes;
   let input = req.query;
 
-  for (const key in req.body) {
+  for (const key in req.query) {
     if (key === "ward") {
       input[key] = Number(input[key]);
     } else if (input[key] === "true") {
