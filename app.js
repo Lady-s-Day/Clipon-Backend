@@ -362,9 +362,16 @@ app.get("/searched-clinics", async (req, res) => {
   }
 
   // console.log("result:::::::::::::", result);
-  res.json({ clinicIds: result });
+  // res.json({ clinicIds: result });
   // 戻り値の形 女医true　{"clinicIds":[1,4,5,7,8]}
   // 戻り値の形 女医false　{"clinicIds":[1,2,4,5,7,8,9,11]}
+  try {
+    const clinics = await db("clinics").select().whereIn("id", result);
+    res.json(clinics);
+  } catch (err) {
+    console.error("Error getting searched clinics", err);
+    res.sendStatus(500);
+  }
 });
 
 app.get("/", async (req, res) => {
