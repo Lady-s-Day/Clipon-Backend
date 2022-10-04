@@ -31,13 +31,14 @@ describe("clipon_Backend", () => {
       expect(actual.length).to.eq(expected.length);
     });
   });
-  describe("post method for approved_clinics", () => {
+  describe.only("post method for approved_clinics", () => {
     it("should insert a new collumn into approved_clinics table", (done) => {
       request
         .post("/approved")
         .send({
           clinic_name: "三軒茶屋メリーレディースクリニック",
-          uid: "53kR3H9AWHcp7u2pQlqELzRaMz13",
+          uid: "jHcPcGQxE1go6bQeerzXW3jfGsm1",
+          photo_uri: "uriだよ〜",
         })
         .end((err, res) => {
           expect(err).to.be.null;
@@ -142,7 +143,7 @@ describe("clipon_Backend", () => {
       // expect(actual.length).to.eq(expected.length);
     });
   });
-  describe.only("get method for /approvedclinics/:uid", () => {
+  describe("get method for /approvedclinics/:uid", () => {
     it("get approved clinics from uid", async () => {
       // const expected = await knex("approved_clinics")
       //   .select()
