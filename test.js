@@ -112,7 +112,7 @@ describe("clipon_Backend", () => {
       expect(actual.length).to.eq(expected.length);
     });
   });
-  describe.only("get methods to get searched-clinics", () => {
+  describe("get methods to get searched-clinics", () => {
     it("should get distinct clinic_id from searched-clinics", async () => {
       // const expected = await knex("treatments").distinct("type");
       const res = await request.get("/searched-clinics").send({
@@ -138,6 +138,20 @@ describe("clipon_Backend", () => {
       const res = await request.get("/types/ids").send({ ids: [1, 2] });
       // const actual = JSON.parse(res.text);
       console.log("res", res.text);
+      // expect(actual[0].id).to.eq(expected[0].id);
+      // expect(actual.length).to.eq(expected.length);
+    });
+  });
+  describe.only("get method for /approvedclinics/:uid", () => {
+    it("get approved clinics from uid", async () => {
+      // const expected = await knex("approved_clinics")
+      //   .select()
+      //   .where({ clinic_id: 10 });
+      const res = await request.get(
+        "/approvedclinics/K9ISFp2HfnTFjRvrfzq9z8ZdiZ33"
+      );
+      console.log("res::::::::::::::", res.text);
+      // const actual = JSON.parse(res.text);
       // expect(actual[0].id).to.eq(expected[0].id);
       // expect(actual.length).to.eq(expected.length);
     });

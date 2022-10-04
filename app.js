@@ -198,6 +198,19 @@ app.get("/approved/:id", async (req, res) => {
   }
 });
 
+app.get("/approvedclinics/:uid", async (req, res) => {
+  try {
+    const approvedClinics = await db("approved_clinics")
+      .join("clinics", "approved_clinics.clinic_id", "clinics.id")
+      .select("clinics.clinic_name", "clinics.id")
+      .where({ "approved_clinics.user_id": req.params.uid });
+    res.json(approvedClinics);
+  } catch (err) {
+    console.error("Error loading approved clinics!", err);
+    res.sendStatus(500);
+  }
+});
+
 app.post("/reviews", async (req, res) => {
   return db("reviews")
     .insert({
