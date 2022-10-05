@@ -4,7 +4,7 @@
  */
 exports.up = function (knex) {
   return knex.schema.createTable("reviews", (t) => {
-    t.increments("id").primary();
+    t.increments().index();
     t.timestamp("date").notNullable();
     t.text("text").notNullable();
     t.integer("clinic_id").references("id").inTable("clinics");
