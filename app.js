@@ -138,7 +138,8 @@ app.get("/reviews/:id", async (req, res) => {
         "reviews.approved"
       )
       .leftJoin("users", "reviews.user_id", "users.uid")
-      .where({ clinic_id: targetId });
+      .where({ clinic_id: targetId })
+      .orderBy("reviews.date", "desc");
     res.json(targetClinic);
   } catch (err) {
     console.error("Error loading reviews id!", err);
