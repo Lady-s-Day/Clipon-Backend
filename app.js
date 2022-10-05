@@ -367,7 +367,7 @@ app.get("/searched-clinics", async (req, res) => {
   // 戻り値の形 女医false　{"clinicIds":[1,2,4,5,7,8,9,11]}
 
   try {
-    const clincs = await db("clincs").select().whereIn("id", result);
+    const clinics = await db("clinics").select().whereIn("id", result);
     res.json(clinics);
   } catch (err) {
     console.error("Error getting searched clinics", err);
