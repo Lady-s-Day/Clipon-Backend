@@ -37,14 +37,14 @@ exports.seed = async function (knex) {
     {
       date: "2022-07-25",
       text: "受付の方は感じの良い方でした。先生は最悪です。本当に星もつけたくありません。態度が横柄、不安でいっぱいなのに鼻で笑う感じ、二度と行きません！",
-      clinic_id: 3,
+      clinic_id: 2,
       user_id: "jHcPcGQxE1go6bQeerzXW3jfGsm1",
       approved: false,
     },
     {
       date: "2022-08-25",
       text: "ここの医師はビジネスでやっているので、患者のことを全く考えていません。これから受診されようとしてる方、絶対にやめた方がいいです。態度も口も悪い。受付の対応も悪いです。いいところが見つかりません。看護師くらいかな、まともなのは。",
-      clinic_id: 3,
+      clinic_id: 2,
       user_id: "zYLiW8w3YLQZUYBqRohZTkjlpM13",
       approved: true,
     },
