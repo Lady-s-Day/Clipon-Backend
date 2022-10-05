@@ -138,7 +138,8 @@ app.get("/reviews/:id", async (req, res) => {
         "reviews.approved"
       )
       .leftJoin("users", "reviews.user_id", "users.uid")
-      .where({ clinic_id: targetId });
+      .where({ clinic_id: targetId })
+      .orderBy("reviews.date", "desc");
     res.json(targetClinic);
   } catch (err) {
     console.error("Error loading reviews id!", err);
@@ -194,6 +195,19 @@ app.get("/approved/:id", async (req, res) => {
     res.json(targetClinics);
   } catch (err) {
     console.error("Error loading clinics!", err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/approvedclinics/:uid", async (req, res) => {
+  try {
+    const approvedClinics = await db("approved_clinics")
+      .join("clinics", "approved_clinics.clinic_id", "clinics.id")
+      .select("clinics.clinic_name", "clinics.id")
+      .where({ "approved_clinics.user_id": req.params.uid });
+    res.json(approvedClinics);
+  } catch (err) {
+    console.error("Error loading approved clinics!", err);
     res.sendStatus(500);
   }
 });
@@ -365,7 +379,7 @@ app.get("/searched-clinics", async (req, res) => {
   // res.json({ clinicIds: result });
   // 戻り値の形 女医true　{"clinicIds":[1,4,5,7,8]}
   // 戻り値の形 女医false　{"clinicIds":[1,2,4,5,7,8,9,11]}
-
+  
   try {
     const clinics = await db("clinics").select().whereIn("id", result);
     res.json(clinics);
